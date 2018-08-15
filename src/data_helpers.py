@@ -31,7 +31,7 @@ class BucketedDataIterator():
             self.epochs += 1
             self.shuffle()
 
-        i = np.random.randint(0, self.num_buckets)
+        i = np.random.randint(0, self.num_buckets)    #返回一个区间内的一个随机整数
 
         res = self.dfs[i].ix[self.cursor[i]:self.cursor[i] + batch_size - 1]
 
