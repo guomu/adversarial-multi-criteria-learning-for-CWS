@@ -19,8 +19,8 @@ class Data_index(object):
         words.append('<EOS>')
         words.insert(0, '<BOS>')
         words.insert(0, '<BOS>')
-        for i in xrange(2, len(words)-2):
-            for j in xrange(-2,3):
+        for i in xrange(2, len(words)-2):       #构造输入序列的窗宽特征，输出为序列长度*9
+            for j in xrange(-2,3):              #窗宽为5
                 if words[i+j] in self.VOCABS.word2idx:
                     word_idx.append(self.VOCABS.word2idx[words[i+j]])
                 else:
@@ -35,8 +35,8 @@ class Data_index(object):
 
         return ','.join(map(str, word_idx)), ','.join(map(str, tag_idx))
 
-    def to_index(self, words, tags):
-        word_idx = []
+    def to_index(self, words, tags):            #不使用二元特征情形下的标记序列
+        word_idx = []                           #序列长度和字符长度一致
         for word in words:
             if word in self.VOCABS.word2idx:
                 word_idx.append(self.VOCABS.word2idx[word])
@@ -52,12 +52,12 @@ class Data_index(object):
         for words,tags in zip(data,label):
             length = len(words)
             ratio = (length-1)/MAX_LEN
-            for i in xrange(0, ratio+1):
+            for i in xrange(0, ratio+1):        #python2的除法特征，这里保证输入数据的完整性
                 tmpwords = words[MAX_LEN*i:MAX_LEN*(i+1)]
                 tmptags = tags[MAX_LEN*i:MAX_LEN*(i+1)]
                 if bigram:
                     word_idx, tag_idx = self.to_index_bi(tmpwords, tmptags)
-                    length = len(tmpwords) - 4
+                    length = len(tmpwords) - 4  #这里对使用二元特征时，长度减4有待质询为什么？
                 else:
                     word_idx, tag_idx = self.to_index(tmpwords, tmptags)
                     length = len(tmpwords)
@@ -102,6 +102,7 @@ class Data_index(object):
         for line in li:
             line = unicode(line, 'utf-8')
             line_t = line.replace('\n', '').replace('\r', '').replace('  ', '#').split('#')
+            #从这里的输出与最终的使用情况来看，对于输入数据的每一行，我需要先标记出来，词中每一个字符的tag
             if len(line_t) < 3:
                 if len(data_sentence) == 0:
                     continue
