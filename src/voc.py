@@ -1,5 +1,5 @@
 import numpy as np
-from collections import defaultdict
+from collections import defaultdict    #在dict引用时，在key不存在时，返回一个默认值，在创建default对象时，就可以默认创建
 
 
 class Vocab(object):
@@ -8,7 +8,7 @@ class Vocab(object):
         self.table_path = train_word
         self.word2idx = defaultdict(int)
         self.word_vectors = None
-        self.single = single_task
+        self.single = single_task    #是否为单一任务
         self.bigram = bi_gram
         self.frequency = frequency
         self.table = []
