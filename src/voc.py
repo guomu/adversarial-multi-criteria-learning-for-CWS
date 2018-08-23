@@ -6,7 +6,7 @@ class Vocab(object):
     def __init__(self, path_vec, train_word, single_task, bi_gram, frequency=15):
         self.path = path_vec
         self.table_path = train_word
-        self.word2idx = defaultdict(int)
+        self.word2idx = defaultdict(int)    #默认取值为0
         self.word_vectors = None
         self.single = single_task    #是否为单一任务
         self.bigram = bi_gram
